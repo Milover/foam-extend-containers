@@ -1,26 +1,34 @@
 # OpenFOAM development setup
 
-Files for setting up a containerized development environment for [OpenFOAM][1]
-and [foam-extend][2].
-The [solids4foam][3] project is also included, although only for supported
-OpenFOAM versions.
+Files for setting up a containerized development environment for [foam-extend][fe]
+along with the [solids4foam][s4f] project.
+The default foam-extend version is 4.1, but it can be supplied at build time
+through the `FOAM_VERSION` variable, e.g.:
 
-All OpenFOAM versions latest available from their respective git repositories.
+```shell
+$ docker build --build-arg FOAM_VERSION="4.0"
+```
 
-Build requirements:
+Official [OpenFOAM][of] container images are available [here][opencfd].
 
-* [Docker][4]
+Requirements:
 
-## TODO
+* [Docker][docker]
 
-Add link to ready-made images.
+**Note**: ParaView and Python dependent stuff is not built (e.g. pyFoam, swak4foam).
+
+### TODO
+
+- [ ] add short example of usage
+- [ ] add link to ready-made image
 
 ## License
 
-[MIT License][5]
+[MIT License][lic]
 
-[1]: https://www.openfoam.com
-[2]: https://sourceforge.net/projects/foam-extend/
-[3]: https://bitbucket.org/philip_cardiff/solids4foam-release/src/master/
-[4]: https://www.docker.com
-[5]: LICENSE
+[of]: https://www.openfoam.com
+[opencfd]: https://hub.docker.com/u/opencfd
+[fe]: https://sourceforge.net/projects/foam-extend/
+[s4f]: https://bitbucket.org/philip_cardiff/solids4foam-release/src/master/
+[docker]: https://www.docker.com
+[lic]: LICENSE
