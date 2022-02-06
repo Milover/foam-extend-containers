@@ -6,24 +6,37 @@
 # - add a runtime supplyable volume
 
 # Set the base image
-FROM debian:bullseye-slim
+FROM debian:bullseye-slim as base
+
+# Set some variables
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Grab basic dependencies first
+RUN apt-get update && apt-get -y install --no-install-recommends \
+	#apt-utils passwd sudo bash wget
+	apt-utils wget
+
+# Grab foam dependencies
+RUN apt-get update && apt-get -y install --no-install-recommends \
+	git-core build-essential binutils-dev cmake flex zlib1g-dev \
+	#libncurses5-dev curl bison libxt-dev rpm mercurial graphviz \
+	curl bison libxt-dev rpm graphviz \
+	&& rm -rf /var/lib/apt/lists/*
+
+# Set the runtime image
+FROM base as runtime
+
+# Add and change user
+#USER app:app
+
+# Set the work directory
+#WORKDIR /home/app
+
+# Set default shell to bash
+#SHELL ["/usr/bin/bash", "-c"]
 
 # Set some variables
 ARG FOAM_VERSION=4.1
-
-# Set default shell to bash
-SHELL ["/usr/bin/bash", "-c"]
-
-# Grab dependencies
-RUN apt-get update && apt-get -y install \
-	sudo wget git-core build-essential binutils-dev cmake flex zlib1g-dev \
-	libncurses5-dev curl bison libxt-dev rpm mercurial graphviz
-
-# Change user
-USER app
-
-# Set the work directory
-WORKDIR /home/app
 
 # Grab sources and prep for build
 RUN git clone https://git.code.sf.net/p/foam-extend/foam-extend-${FOAM_VERSION} \
