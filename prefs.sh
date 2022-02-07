@@ -46,7 +46,7 @@ export FOAM_VERBOSE=1
 # The other openmpi related variables will be initialized using
 # the command mpicc --showme:
 #
-export WM_MPLIB=SYSTEMOPENMPI
+#export WM_MPLIB=SYSTEMOPENMPI
 #export OPENMPI_DIR=path_to_system_installed_openmpi
 #export OPENMPI_BIN_DIR=$OPENMPI_DIR/bin
 #
@@ -74,7 +74,7 @@ export WM_MPLIB=SYSTEMOPENMPI
 #export CUDA_ARCH=sm_20
 
 # System installed Mesquite
-#export MESQUITE_SYSTEM=1
+export MESQUITE_SYSTEM=1
 #export MESQUITE_DIR=path_to_system_installed_mesquite
 #export MESQUITE_BIN_DIR=$MESQUITE_DIR/bin
 #export MESQUITE_LIB_DIR=$MESQUITE_DIR/lib
@@ -95,21 +95,21 @@ export PARMETIS_SYSTEM=1
 #export PARMETIS_INCLUDE_DIR=$PARMETIS_DIR/include
 
 # System installed ParMGridgen
-#export PARMGRIDGEN_SYSTEM=1
+export PARMGRIDGEN_SYSTEM=1
 #export PARMGRIDGEN_DIR=path_to_system_installed_parmgridgen
 #export PARMGRIDGEN_BIN_DIR=$PARMGRIDGEN_DIR/bin
 #export PARMGRIDGEN_LIB_DIR=$PARMGRIDGEN_DIR/lib
 #export PARMGRIDGEN_INCLUDE_DIR=$PARMGRIDGEN_DIR/include
 
 # System installed Libccmio
-#export LIBCCMIO_SYSTEM=1
+export LIBCCMIO_SYSTEM=1
 #export LIBCCMIO_DIR=path_to_system_installed_libccmio
 #export LIBCCMIO_BIN_DIR=$LIBCCMIO_DIR/bin
 #export LIBCCMIO_LIB_DIR=$LIBCCMIO_DIR/lib
 #export LIBCCMIO_INCLUDE_DIR=$LIBCCMIO_DIR/include
 
 # System installed Scotch
-export SCOTCH_SYSTEM=1
+#export SCOTCH_SYSTEM=1
 #export SCOTCH_DIR=path_to_system_installed_scotch
 #export SCOTCH_BIN_DIR=$SCOTCH_DIR/bin
 #export SCOTCH_LIB_DIR=$SCOTCH_DIR/lib
@@ -121,17 +121,17 @@ export CMAKE_SYSTEM=1
 #export CMAKE_BIN_DIR=$CMAKE_DIR/bin
 
 # System installed Python
-#export PYTHON_SYSTEM=1
+export PYTHON_SYSTEM=1
 #export PYTHON_DIR=path_to_system_installed_python
 #export PYTHON_BIN_DIR=$PYTHON_DIR/bin
 
 # System installed PyFoam
-#export PYFOAM_SYSTEM=1
+export PYFOAM_SYSTEM=1
 #export PYFOAM_DIR=path_to_system_installed_python
 #export PYFOAM_BIN_DIR=$PYFOAM_DIR/bin
 
 # System installed hwloc
-export HWLOC_SYSTEM=1
+#export HWLOC_SYSTEM=1
 #export HWLOC_DIR=path_to_system_installed_hwloc
 #export HWLOC_BIN_DIR=$HWLOC_DIR/bin
 
@@ -212,16 +212,16 @@ export M4_SYSTEM=1
 #export WM_THIRD_PARTY_USE_GCC_451=1
 #export WM_THIRD_PARTY_USE_GCC_445=1
 #export WM_THIRD_PARTY_USE_PYTHON_27=1
-#export WM_THIRD_PARTY_USE_M4_1416=1
-#export WM_THIRD_PARTY_USE_BISON_27=1
-#export WM_THIRD_PARTY_USE_FLEX_2535=1
+export WM_THIRD_PARTY_USE_M4_1416=1
+export WM_THIRD_PARTY_USE_BISON_27=1
+export WM_THIRD_PARTY_USE_FLEX_2535=1
 #export WM_THIRD_PARTY_USE_CMAKE_322=1
 #export WM_THIRD_PARTY_USE_CMAKE_332=1
 #export WM_THIRD_PARTY_USE_CMAKE_3114=1
 
 #
 # For AllMake.stage2
-#export WM_THIRD_PARTY_USE_OPENMPI_400=1
+export WM_THIRD_PARTY_USE_OPENMPI_400=1
 #export WM_THIRD_PARTY_USE_OPENMPI_400_ConfigureAdditionalArgs='--enable-mpi-cxx --with-verbs'
 #export WM_THIRD_PARTY_USE_OPENMPI_311=1
 #export WM_THIRD_PARTY_USE_OPENMPI_311_ConfigureAdditionalArgs='--enable-mpi-cxx --with-verbs'
@@ -242,12 +242,12 @@ export M4_SYSTEM=1
 #export WM_THIRD_PARTY_USE_PARMGRIDGEN_10=1
 #export WM_THIRD_PARTY_USE_LIBCCMIO_261=1
 #export WM_THIRD_PARTY_USE_MESQUITE_230=1
-#export WM_THIRD_PARTY_USE_SCOTCH_604=1
+export WM_THIRD_PARTY_USE_SCOTCH_604=1
 #export WM_THIRD_PARTY_USE_SCOTCH_600=1
 #export WM_THIRD_PARTY_USE_PARMETIS_403=1
 #export WM_THIRD_PARTY_USE_ZOLTAN_36=1
 #export WM_THIRD_PARTY_USE_PYFOAM_069=1
-#export WM_THIRD_PARTY_USE_HWLOC_201=1
+export WM_THIRD_PARTY_USE_HWLOC_201=1
 #export WM_THIRD_PARTY_USE_HWLOC_1101=1
 #export WM_THIRD_PARTY_USE_HWLOC_172=1
 
