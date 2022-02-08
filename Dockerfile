@@ -15,6 +15,7 @@
 # Build args
 
 ARG FOAM_VERSION=4.1
+ARG FOAM_DIR="/home/app/foam/foam-extend-$FOAM_VERSION"
 
 # --------------------------------------------------------------------------- #
 # Build-base image
@@ -24,12 +25,13 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Grab basic dependencies first
 RUN apt-get update && apt-get -y install --no-install-recommends \
-	apt-utils wget ca-certificates libnss-wrapper
+	apt-utils file wget ca-certificates libnss-wrapper
 
 # Grab foam dependencies
 RUN apt-get update && apt-get -y install --no-install-recommends \
-	git-core build-essential binutils-dev cmake zlib1g-dev \
+	git-core build-essential gfortran binutils-dev cmake zlib1g-dev \
 	libncurses5-dev curl libxt-dev rpm mercurial graphviz \
+	libfl-dev bison bc \
  && rm -rf /var/lib/apt/lists/*
 
 # --------------------------------------------------------------------------- #
@@ -37,39 +39,40 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 
 FROM build-base as build
 ARG FOAM_VERSION
+ARG FOAM_DIR
 
 # Shell and user setup
 SHELL ["/bin/bash", "-c"]
 RUN useradd -m -s '/bin/bash' app
 USER app:app
 
-# Grab foam sources
+# Grab foam and solids4foam sources
 RUN git clone --depth 1 --branch=master \
 	"https://git.code.sf.net/p/foam-extend/foam-extend-$FOAM_VERSION" \
-	"/home/app/foam/foam-extend-$FOAM_VERSION"
+	"$FOAM_DIR" \
+ && git clone --depth 1 --branch=master \
+	https://bitbucket.org/philip_cardiff/solids4foam-release \
+	"$FOAM_DIR/solids4foam"
 
 # Move the work directory to the foam directory
-WORKDIR "/home/app/foam/foam-extend-$FOAM_VERSION"
+WORKDIR "$FOAM_DIR"
 
 # Copy over build prefs
 COPY --chown=app:app prefs.sh etc
 
-# Build foam
+# Build foam and solids4foam
 RUN sed -i -e 's/rpmbuild --define/rpmbuild --define "_build_id_links none" --define/' \
 			  ThirdParty/tools/makeThirdPartyFunctionsForRPM \
  && sed -i -e 's/^export WM_NCOMPPROCS=1$/#export WM_NCOMPPROCS=1/' \
 		   -e 's/^( cd \$WM_THIRD_PARTY_DIR && \.\/AllMake\.post )$/#( cd $WM_THIRD_PARTY_DIR \&\& .\/AllMake.post )/' \
 			   Allwmake.firstInstall \
  && source etc/bashrc \
- && ./Allwmake.firstInstall <<< y
-
-# Grab and build solids4foam
-RUN git clone --depth 1 --branch=master https://bitbucket.org/philip_cardiff/solids4foam-release \
- && cd solids4foam-release \
- && ./Allwmake
-
-# Clean build files
-RUN cd ../ && wmake/wcleanAllButLibBinLnInclude
+ && ./Allwmake.firstInstall <<< "y" \
+ && source etc/bashrc \
+ && cd solids4foam \
+ && ./Allwmake \
+ && cd .. \
+ && wmake/wcleanAllButLibBinLnInclude
 
 # --------------------------------------------------------------------------- #
 # Runtime-base image
@@ -79,7 +82,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Grab runtime dependencies and dev tools
 RUN apt-get update && apt-get -y install --no-install-recommends \
-	g++ make ccache flex zlib1g-dev bison \
+	g++ make ccache zlib1g-dev bison libfl-dev \
  && rm -rf /var/lib/apt/lists/*
 
 # Shell and user setup
@@ -93,12 +96,46 @@ WORKDIR "/home/app"
 
 FROM runtime-base as runtime
 ARG FOAM_VERSION
+ARG FOAM_DIR
 
 # Copy over binaries and sources
-COPY --chown=app:app --from=build \
-	applications bin etc lib src wmake .build ThirdParty/packages \
-	"/home/app/foam/foam-extend-$FOAM_VERSION/"
+COPY --chown=app:app --from=build "$FOAM_DIR" "$FOAM_DIR"
 
-# Copy over solids4foam stuff
+# Copy over user libraries and executables
+COPY --chown=app:app --from=build "home/app/foam" "/home/app/foam/"
+
+# Remove unnecessary stuff
+RUN rm -rf \
+	"$FOAM_DIR/.git"* \
+	"$FOAM_DIR/.hg"* \
+	"$FOAM_DIR/All"* \
+	"$FOAM_DIR/CTestConfig.cmake" \
+	"$FOAM_DIR/Changelog"* \
+	"$FOAM_DIR/ExtendProjectPreamble" \
+	"$FOAM_DIR/Macros" \
+	"$FOAM_DIR/README"* \
+	"$FOAM_DIR/Release"* \
+	"$FOAM_DIR/cmake" \
+	"$FOAM_DIR/doc" \
+	"$FOAM_DIR/extend-bazaar" \
+	"$FOAM_DIR/testHarness" \
+	"$FOAM_DIR/tutorials" \
+	"$FOAM_DIR/vagrantSandbox" \
+	"$FOAM_DIR/validationAndVerificationSuite" \
+	"$FOAM_DIR/ThirdParty/.git"* \
+	"$FOAM_DIR/ThirdParty/All"* \
+	"$FOAM_DIR/ThirdParty/LocalDev" \
+	"$FOAM_DIR/ThirdParty/PyFoamSiteScripts" \
+	"$FOAM_DIR/ThirdParty/README"* \
+	"$FOAM_DIR/ThirdParty/mingwBuild" \
+	"$FOAM_DIR/ThirdParty/rpmBuild" \
+	"$FOAM_DIR/ThirdParty/tools" \
+	"$FOAM_DIR/solids4foam/.git"* \
+	"$FOAM_DIR/solids4foam/Dockerfile" \
+	"$FOAM_DIR/solids4foam/README"* \
+	"$FOAM_DIR/solids4foam/bitbucket"* \
+	"$FOAM_DIR/solids4foam/documentation" \
+	"$FOAM_DIR/solids4foam/filesToReplaceInOF" \
+	"$FOAM_DIR/solids4foam/tutorials"
 
 # --------------------------------------------------------------------------- #
