@@ -74,6 +74,40 @@ RUN sed -i -e 's/rpmbuild --define/rpmbuild --define "_build_id_links none" --de
  && cd .. \
  && wmake/wcleanAllButLibBinLnInclude
 
+# Remove unnecessary stuff
+RUN rm -rf \
+	".git"* \
+	".hg"* \
+	"All"* \
+	"CTestConfig.cmake" \
+	"Changelog"* \
+	"ExtendProjectPreamble" \
+	"Macros" \
+	"README"* \
+	"Release"* \
+	"cmake" \
+	"doc" \
+	"extend-bazaar" \
+	"testHarness" \
+	"tutorials" \
+	"vagrantSandbox" \
+	"validationAndVerificationSuite" \
+	"ThirdParty/.git"* \
+	"ThirdParty/All"* \
+	"ThirdParty/LocalDev" \
+	"ThirdParty/PyFoamSiteScripts" \
+	"ThirdParty/README"* \
+	"ThirdParty/mingwBuild" \
+	"ThirdParty/rpmBuild" \
+	"ThirdParty/tools" \
+	"solids4foam/.git"* \
+	"solids4foam/Dockerfile" \
+	"solids4foam/README"* \
+	"solids4foam/bitbucket"* \
+	"solids4foam/documentation" \
+	"solids4foam/filesToReplaceInOF" \
+	"solids4foam/tutorials"
+
 # --------------------------------------------------------------------------- #
 # Runtime-base image
 
@@ -98,44 +132,7 @@ FROM runtime-base as runtime
 ARG FOAM_VERSION
 ARG FOAM_DIR
 
-# Copy over binaries and sources
-COPY --chown=app:app --from=build "$FOAM_DIR" "$FOAM_DIR"
-
 # Copy over user libraries and executables
 COPY --chown=app:app --from=build "home/app/foam" "/home/app/foam/"
-
-# Remove unnecessary stuff
-RUN rm -rf \
-	"$FOAM_DIR/.git"* \
-	"$FOAM_DIR/.hg"* \
-	"$FOAM_DIR/All"* \
-	"$FOAM_DIR/CTestConfig.cmake" \
-	"$FOAM_DIR/Changelog"* \
-	"$FOAM_DIR/ExtendProjectPreamble" \
-	"$FOAM_DIR/Macros" \
-	"$FOAM_DIR/README"* \
-	"$FOAM_DIR/Release"* \
-	"$FOAM_DIR/cmake" \
-	"$FOAM_DIR/doc" \
-	"$FOAM_DIR/extend-bazaar" \
-	"$FOAM_DIR/testHarness" \
-	"$FOAM_DIR/tutorials" \
-	"$FOAM_DIR/vagrantSandbox" \
-	"$FOAM_DIR/validationAndVerificationSuite" \
-	"$FOAM_DIR/ThirdParty/.git"* \
-	"$FOAM_DIR/ThirdParty/All"* \
-	"$FOAM_DIR/ThirdParty/LocalDev" \
-	"$FOAM_DIR/ThirdParty/PyFoamSiteScripts" \
-	"$FOAM_DIR/ThirdParty/README"* \
-	"$FOAM_DIR/ThirdParty/mingwBuild" \
-	"$FOAM_DIR/ThirdParty/rpmBuild" \
-	"$FOAM_DIR/ThirdParty/tools" \
-	"$FOAM_DIR/solids4foam/.git"* \
-	"$FOAM_DIR/solids4foam/Dockerfile" \
-	"$FOAM_DIR/solids4foam/README"* \
-	"$FOAM_DIR/solids4foam/bitbucket"* \
-	"$FOAM_DIR/solids4foam/documentation" \
-	"$FOAM_DIR/solids4foam/filesToReplaceInOF" \
-	"$FOAM_DIR/solids4foam/tutorials"
 
 # --------------------------------------------------------------------------- #
