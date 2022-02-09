@@ -36,7 +36,7 @@ RUN git clone --depth 1 --branch=master \
 WORKDIR "$FOAM_DIR/solids4foam"
 
 # Build foam and solids4foam
-RUN source "$FOAM_DIR/
+RUN source "$FOAM_DIR/etc/bashrc" \
  && ./Allwmake \
  && cd .. \
  && wmake/wcleanAllButLibBinLnInclude
