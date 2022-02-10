@@ -21,7 +21,7 @@ USER root:root
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
  && apt-get -y install --no-install-recommends \
 	apt-utils file wget ca-certificates libnss-wrapper \
-	git-core build-essential binutils-dev \
+	git-core build-essential binutils-dev bc \
  && rm -rf /var/lib/apt/lists/*
 
 # Set user
@@ -39,7 +39,10 @@ WORKDIR "$FOAM_DIR/solids4foam"
 RUN source "$FOAM_DIR/etc/bashrc" \
  && ./Allwmake \
  && cd .. \
- && wmake/wcleanAllButLibBinLnInclude
+ && wmake/wcleanAllButLibBinLnInclude || :
+
+# Tag the build
+RUN echo $(git rev-parse HEAD) > .build
 
 # Remove unnecessary stuff
 RUN rm -rf \
@@ -49,9 +52,6 @@ RUN rm -rf \
 	"bitbucket"* \
 	"documentation" \
 	"tutorials"
-
-# Tag the build
-RUN echo $(git rev-parse HEAD) > .build
 
 # --------------------------------------------------------------------------- #
 # Runtime image
