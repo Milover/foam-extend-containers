@@ -95,21 +95,21 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
 	zlib1g-dev bison libfl-dev \
  && rm -rf /var/lib/apt/lists/*
 
-# Copy over user libraries and executables
-COPY --chown=app:app --from=build "home/app/foam" "/home/app/foam/"
-
 # User and shell setup
 SHELL ["/bin/bash", "-c"]
 RUN useradd -m -s '/bin/bash' app
 USER app:app
 WORKDIR "/home/app"
 
+# Copy over user libraries and executables
+COPY --chown=app:app --from=build "home/app/foam" "/home/app/foam/"
+
 # Set environment vairables
 ENV FOAM_DIR="$FOAM_DIR"
 
 # Set some labels
-LABEL "foam-version"="$FOAM_VERSION" \
-	  "foam-commit"="$FOAM_COMMIT" \
-	  "author"="milovic.ph@gmail.com"
+LABEL foam-version="$FOAM_VERSION" \
+	  foam-commit="$FOAM_COMMIT" \
+	  author="milovic.ph@gmail.com"
 
 # --------------------------------------------------------------------------- #

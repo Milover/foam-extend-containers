@@ -70,6 +70,6 @@ COPY --chown=app:app --from=build \
 	"$FOAM_DIR/solids4foam/"
 
 # Set some labels
-LABEL "solids4foam-commit"="$S4F_COMMIT"
+LABEL solids4foam-commit="$S4F_COMMIT"
 
 # --------------------------------------------------------------------------- #
