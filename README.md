@@ -3,7 +3,7 @@
 Files for setting up base container images for [foam-extend][fe] and the
 [solids4foam][s4f] project.
 The default foam-extend version is 4.1, but it can be changed in the Makefile
-by chaning the `FOAM_VERSION` variable.
+by changing the `FOAM_VERSION` variable.
 
 __Notes:__
 * most third party components aren't built/included (e.g. pyFoam, metis)
@@ -28,7 +28,6 @@ $ make solids4foam
 
 Depending on your Docker setup, you might have to prepend `sudo` to the make
 commands.
-
 
 ## License
 

@@ -91,7 +91,7 @@ ARG FOAM_COMMIT="unknown"
 # Grab runtime dependencies
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
  && apt-get -y install --no-install-recommends \
-	#g++ make ccache zlib1g-dev bison libfl-dev \
+	#g++ make zlib1g-dev bison libfl-dev \
 	zlib1g-dev bison libfl-dev \
  && rm -rf /var/lib/apt/lists/*
 
@@ -106,6 +106,7 @@ COPY --chown=app:app --from=build "home/app/foam" "/home/app/foam/"
 
 # Set environment vairables
 ENV FOAM_DIR="$FOAM_DIR"
+ENV FOAM_VERSION="$FOAM_VERSION"
 
 # Set some labels
 LABEL foam-version="$FOAM_VERSION" \

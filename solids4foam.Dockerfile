@@ -63,7 +63,7 @@ ARG S4F_COMMIT="unknown"
 
 # Copy over user libraries and executables
 COPY --chown=app:app --from=build \
-	"home/app/foam/app-$FOAM_VERSION" \
+	"/home/app/foam/app-$FOAM_VERSION" \
 	"/home/app/foam/app-$FOAM_VERSION/"
 COPY --chown=app:app --from=build \
 	"$FOAM_DIR/solids4foam" \
