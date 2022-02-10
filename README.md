@@ -1,26 +1,22 @@
-# OpenFOAM development setup
+# Containers for foam-extend and related projects
 
-Files for setting up a containerized development environment for [foam-extend][fe]
-along with the [solids4foam][s4f] project.
-The default foam-extend version is 4.1, but it can be supplied at build time
-through the `FOAM_VERSION` variable, e.g.:
-
-```shell
-$ docker build --build-arg FOAM_VERSION="4.0"
-```
-
-Official [OpenFOAM][of] container images are available [here][opencfd].
+Files for setting up base container images for [foam-extend][fe] and the
+[solids4foam][s4f] project.
+The default foam-extend version is 4.1, but it can be changed in the Makefile
+by chaning the `FOAM_VERSION` variable.
 
 Requirements:
 
 * [Docker][docker]
 
-**Note**: ParaView and Python dependent stuff is not built (e.g. pyFoam, swak4foam).
+__Notes:__
+* most third party components aren't built/included (e.g. pyFoam, metis)
+* build tools aren't included in the base images
+* master branch tips are used for building
 
-### TODO
-
-- [ ] add short example of usage
-- [ ] add link to ready-made image
+Prebuilt images are available through the [Docker hub][docker-hub]:
+* [foam-extend][fe-hub]
+* [solids4foam][s4f-hub]
 
 ## License
 
@@ -32,3 +28,6 @@ Requirements:
 [s4f]: https://bitbucket.org/philip_cardiff/solids4foam-release/src/master/
 [docker]: https://www.docker.com
 [lic]: LICENSE
+[docker-hub]: https://hub.docker.com
+[fe-hub]: https://hub.docker.com/r/capsisescape/foam-extend
+[s4f-hub]: https://hub.docker.com/r/capsisescape/solids4foam
